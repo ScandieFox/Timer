@@ -12,6 +12,7 @@ public class Timer : MonoBehaviour
 
     float currentTime;
     int currentPlayer = 1;
+    private bool TimeEnded = false;
 
     private void Start()
     {
@@ -21,13 +22,23 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        currentTime -= Time.deltaTime;
-        CalculateAndShowTimer();
-        if(currentTime <= 0)
+        if(TimeEnded && Input.GetMouseButtonDown(0))
         {
-            UpdatePlayerAndResetTime();
+            // Wait for user to press the button
         }
+        else
+        {
+            currentTime -= Time.deltaTime;
+            CalculateAndShowTimer();
+            if (currentTime <= 0)
+            {
+                TimeEnded = true;
+            }
+        }
+        
+        
     }
+   
     void UpdatePlayerAndResetTime()
     {
         currentTime = MinutesTimer * 60;
@@ -56,5 +67,17 @@ public class Timer : MonoBehaviour
         timeAsString += seconds.ToString();
 
         TimerText.text = timeAsString;
+    }
+    public void StartNextPlayerTurn()
+    {
+        if (TimeEnded)
+        {
+            UpdatePlayerAndResetTime();
+            TimeEnded = false;
+        }
+        else
+        {
+            // Timer hasn't ended yet, so do nothing
+        }
     }
 }
